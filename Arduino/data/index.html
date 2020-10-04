@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>EyeCaptain Web Controller</title>
+        <script src="config.js"></script>
+        <script src="websocket.js"></script>
+        <script src="helpers.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+    </head>
+    <body>
+        <div id="msgOverlay">
+            <p class="msgOverlayText">Waiting to connect to Arduino web socket server. Are you connected to EyeCaptain Wifi Hotspot?</p>
+        </div>
+    <script>
+    
+    var circlePos, circle;
+    var point, pointRect;
+    var drivePos = {x:0, y:0};
+    var resetTimeout;
+    // Connection is stored in global variable "connection". Will try to reconnect when websocket is closed
+    connect_websocket();
+
+    ready( () => {
+        circle = document.getElementById("circle");
+        point = document.getElementById("point");
+        
+        // Resize circle to full screen
+        resizeCircle();
+
+        // Map position between -100 and 100
+        circle.onmousemove = (e) => {
+            clearTimeout(resetTimeout);
+            resetTimeout = setTimeout ( () => {
+                stopDriving();
+            },1000);
+            handleMove(e.clientX, e.clientY)
+        }
+
+        circle.addEventListener("touchstart", (e) => {
+            resetTimeout = setTimeout ( () => {
+                stopDriving();
+            },1000);
+        })
+        circle.addEventListener("touchmove", (e) => {
+            clearTimeout(resetTimeout);
+            handleMove(e.touches[0].clientX, e.touches[0].clientY);
+        }, false);
+        circle.addEventListener("touchend", (e) => {
+            clearTimeout(resetTimeout);
+            stopDriving();
+        }, false);
+    })
+
+    function stopDriving () {
+        drivePos.x = 0;
+        drivePos.y = 0;
+        handleMove(0,0);
+    }
+    function handleMove (x,y) {
+        console.log("handleMove");
+        // Only send when cursor is inside circle
+        var stop = false;
+        if(!pointInCircle(x, y)) {
+            x = window.innerWidth/2;
+            y = window.innerHeight/2;
+            stop=true;
+        }
+
+        point.style.top = (y-pointRect.height/2)+"px";
+        point.style.left = (x-pointRect.width/2)+"px";
+        
+        xPos = x - circlePos.left;
+        yPos = y - circlePos.top;
+        if(stop) {
+            drivePos.x=0;
+            drivePos.y=0;    
+        }else{
+            drivePos.x = Math.round(xPos.map(0, circlePos.width, -config.maxX, config.maxX));
+            drivePos.y = Math.round(yPos.map(0, circlePos.height, config.maxY, -config.maxY));
+        }
+        point.innerHTML = drivePos.x+"/"+drivePos.y;
+        
+    }
+
+    
+    window.onresize = () => { resizeCircle(); }
+
+    setInterval( () => {
+        var tmpMsg = "%"+drivePos.x+","+drivePos.y+";";
+        if(connection.readyState == 1){
+            connection.send(tmpMsg);
+        }
+    },config.sendMsgInterval)
+
+    // x,y is the point to test
+    // cx, cy is circle center, and radius is circle radius
+    function pointInCircle(x, y) {
+        var cx = (circlePos.width/2)+circlePos.left;
+        var cy = (circlePos.height/2)+circlePos.top;
+        var radius = circlePos.width/2;
+        var distancesquared = (x - cx) * (x - cx) + (y - cy) * (y - cy);
+        return distancesquared <= radius * radius;
+    }
+    </script>
+    <div id="circle" class="circle">
+        <div id="point"></div>
+    </div>
+
+
+    </body>
+</html>
+
+
+

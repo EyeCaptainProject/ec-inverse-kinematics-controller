@@ -1,0 +1,47 @@
+html, body {
+    height:100%;
+    width:100%;
+    overflow:hidden;
+}
+
+.circle {
+    margin:auto;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 50%;
+    background: #000;
+    border: 1px solid black;
+    color: #fff;
+    font: 18px "josefin sans", arial;
+}
+
+#point {
+    position:absolute;
+    border-radius: 50%;
+    background-color: #71B47A;
+    box-shadow: 0 0 15px 0 #71B47A;
+    display:block;
+}
+
+#msgOverlay {
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    text-align: center;
+    background-color: rgba(100,0,0,0.6);
+    margin: auto;
+    display: none;
+    color: #fff;
+}
+
+#msgOverlay > p{
+    margin-top:100px;
+    margin-left: auto;
+    margin-right:auto;
+    width:50%;
+    height:50%;
+    font-size:30pt;
+   
+}
