@@ -1,18 +1,19 @@
 
 var connection=false;
 var connect_timeout;
+const IP_ADDRESS = "192.168.4.1";
+
 function connect_websocket() {
     
     if(connection.readyState != 1) {
         console.log("Trying to connect to websocket");
-        connection = new WebSocket('ws://192.168.4.1:81/');
+        connection = new WebSocket('ws://'+IP_ADDRESS+':81/');
     }else{
         console.log("Tried to connect to websocket, but was already established", connection);
     }
     
     connection.onopen = function () {
         console.log("Connected to websocket");
-        console.log("YES!");
         clearTimeout(connect_timeout);
     };
     connection.onerror = function (error) {

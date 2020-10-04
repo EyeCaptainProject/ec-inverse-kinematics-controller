@@ -108,7 +108,7 @@ Libraries needed:
 
 - https://github.com/Links2004/arduinoWebSockets
 
-```arduino
+```c
 #include <ESP8266WiFi.h>
 #include <ESP8266WiFiMulti.h>
 #include <ArduinoOTA.h>
@@ -123,7 +123,7 @@ Libraries needed:
 
 Calibration of servo motor position. Because the lever of the motors are never at the exact same position, it is necessary to calibrate the motors prior to first use in the project.
 
-```arduino
+```c
 // Adjust the following factor until the servos move exactly 90 degrees
 // D-POWER-servos: 
 #define SERVOFAKTORLEFT 700
@@ -140,7 +140,7 @@ Calibration of servo motor position. Because the lever of the motors are never a
 
 The following code describs the geometry of the adapter, which is used for the calculation of the angels (inverse kinematics).
 
-```arduino
+```c
 // length of arms
 #define L1 35
 #define L2 45
@@ -157,7 +157,7 @@ The following code describs the geometry of the adapter, which is used for the c
 
 The nodeMCU sets up an access point for the tablet to log in (WIFI). The name of the network and the passwort are defined in the code.
 
-```arduino
+```c
 ESP8266WiFiMulti wifiMulti;       // Create an instance of the ESP8266WiFiMulti class, called 'wifiMulti'
 
 ESP8266WebServer server(80);       // Create a webserver object that listens for HTTP request on port 80
@@ -178,32 +178,30 @@ const char* mdnsName = "eyecaptain"; // Domain name for the mDNS responder
 
 If the NodeMCU is connected to the tablet via WIFI, the serial connection is only for debugging. But you can also use the serial connecting for transmitting the coordinates from the tablet to the Arduino.
 
-```arduino
+```c
 Serial.begin(115200);        // Start the Serial communication to send messages to the computer
 ```
 
 
-
-
 # Overview of the mechanics 3d Parts:
 
-Base_Plate.stl
+#### Base_Plate.stl
 <img src="docs/img/Base_Plate.png" width="250">
 
-Servo_Mount.stl: Holds the two servos
+#### Servo_Mount.stl: Holds the two servos
 <img src="docs/img/Servo_Mount.png" width="250">
 
-Arm_1.stl
+#### Arm_1.stl
 <img src="docs/img/Arm_1.png" width="250">
 
-Arm_2.stl
+#### Arm_2.stl
 <img src="docs/img/Arm_2.png" width="250">
 
-Arm_Mount_Part1.stl
+#### Arm_Mount_Part1.stl
 <img src="docs/img/Arm_Mount_Part1.png" width="250">
 
-Arm_Mount_Part2.stl
+#### Arm_Mount_Part2.stl
 <img src="docs/img/Arm_Mount_Part2.png" width="250">
 
-Simple_Stick.stl
+#### Simple_Stick.stl
 <img src="docs/img/Simple_Stick.png" width="250">
